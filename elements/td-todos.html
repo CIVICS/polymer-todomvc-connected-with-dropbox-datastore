@@ -18,7 +18,7 @@
 	<template>
 		<link rel="stylesheet" href="td-todos.css">
 		<flatiron-director route="{{route}}"></flatiron-director>
-		<section id="todoapp">
+		<section id="todoapp" hidden?="{{!storageReady}}">
 			<header id="header">
 				<input is="td-input" id="new-todo" placeholder="What needs to be done?" autofocus on-td-input-commit="{{addTodoAction}}" on-td-input-cancel="{{cancelAddTodoAction}}">
 			</header>
@@ -47,6 +47,7 @@
 				<button hidden?="{{model.completedCount == 0}}" id="clear-completed" on-click="{{clearCompletedAction}}">Clear completed ({{model.completedCount}})</button>
 			</footer>
 		</section>
+		<p id="dropbox-notice" hidden?="{{storageReady}}">Something wrong with dropbox datastore.</p>
 	</template>
 
 	<script>
@@ -54,35 +55,48 @@
 			var ENTER_KEY = 13;
 			var ESC_KEY = 27;
 			Polymer('td-todos', {
-				modelIdChanged: function() {
+				storageReady: false,
+				modelIdChanged: function(){
 					this.model = document.querySelector('#' + this.modelId);
+					this.bindEventForStorage(this.model);
+					this.model.connect();
 				},
-				routeChanged: function() {
-					if (this.model) {
+				bindEventForStorage: function(storage){
+					var me = this;
+					storage.addEventListener('dropbox-ds-connect-error', function(){
+						me.storageReady = false;
+					});
+					storage.addEventListener('dropbox-ds-connect-success', function(){
+						me.storageReady = true;
+					});
+				},
+				routeChanged: function(){
+					if(this.model){
 						this.model.filter = this.route;
 					}
 				},
-				addTodoAction: function() {
+				addTodoAction: function(){
 					this.model.newItem(this.$['new-todo'].value);
 					// when polyfilling Object.observe, make sure we update immediately
 					Platform.flush();
 					this.$['new-todo'].value = '';
 				},
-				cancelAddTodoAction: function() {
+				cancelAddTodoAction: function(){
 					this.$['new-todo'].value = '';
 				},
-				itemChangedAction: function() {
-					if (this.model) {
+				itemChangedAction: function(e, item){
+					if(this.model){
+						this.model.updateItem(item);
 						this.model.itemsChanged();
 					}
 				},
-				destroyItemAction: function(e, detail) {
+				destroyItemAction: function(e, detail){
 					this.model.destroyItem(detail);
 				},
-				toggleAllCompletedAction: function(e, detail, sender) {
+				toggleAllCompletedAction: function(e, detail, sender){
 					this.model.setItemsCompleted(sender.checked);
 				},
-				clearCompletedAction: function() {
+				clearCompletedAction: function(){
 					this.model.clearItems();
 				}
 			});

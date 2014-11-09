@@ -275,3 +275,9 @@ label[for='toggle-all'] {
 		appearance: none;
 	}
 }
+#dropbox-notice{
+	text-align: center;
+	position: relative;
+	top: 20px;
+	color: #a6a6a6;
+}

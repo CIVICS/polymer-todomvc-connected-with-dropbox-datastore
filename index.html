@@ -14,7 +14,7 @@
 		<title>Polymer • TodoMVC</title>
 		<link rel="stylesheet" href="app/app.css" shim-shadowdom>
 		<script src="components/platform/platform.js"></script>
-		<link rel="import" href="components/core-localstorage/core-localstorage.html">
+		<link rel="import" href="components/polymer-dropbox-datastore/dropbox-datastore.html">
 		<link rel="import" href="elements/td-model.html">
 		<link rel="import" href="elements/td-todos.html">
 	</head>
@@ -22,14 +22,15 @@
 		<header>
 			<h1>todos</h1>
 		</header>
-		<core-localstorage id="storage" name="todos-polymer"></core-localstorage>
-		<td-model id="model" storageId="storage"></td-model>
+		<dropbox-datastore id="storage" appKey="a69p65jc9i35eiq" autoConnect="false"></dropbox-datastore>
+		<td-model id="model" storageId="storage" tableName="todos-polymer"></td-model>
 		<td-todos modelId="model"></td-todos>
 		<footer id="info">
 			<p>Double-click to edit a todo</p>
 			<p>Created by <a href="http://www.polymer-project.org">The Polymer Authors</a></p>
 			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
 		</footer>
+		<a href="https://github.com/kashiro/polymer-todomvc-connected-with-dropbox-datastore"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/82b228a3648bf44fc1163ef44c62fcc60081495e/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png"></a>
 		<script src="components/todomvc-common/base.js"></script>
 	</body>
 </html>
