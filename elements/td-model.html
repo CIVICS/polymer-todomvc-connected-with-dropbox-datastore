@@ -9,78 +9,123 @@
 -->
 <link rel="import" href="../components/polymer/polymer.html">
 
-<polymer-element name="td-model" attributes="filter items storageId">
+<polymer-element name="td-model" attributes="filter items storageId tableName">
 	<script>
 		Polymer('td-model', {
 			filtered: null,
 			completedCount: 0,
 			activeCount: 0,
 			allCompleted: false,
-			ready: function() {
-				this.asyncMethod(function() {
-					this.items = this.storage.value || [];
+			tableName: null,
+			getDataStoreManager: function(callback){
+				var me = this;
+				me.dsm = this.storage.dataStoreManager;
+				me.dsm.openDefaultDatastore(function (error, datastore) {
+				    if (error) {
+				        alert('Error opening default datastore: ' + error);
+						return;
+				    }
+					me.ds = datastore;
+					me.table = datastore.getTable(me.tableName);
+					callback && callback();
 				});
 			},
-			filterChanged: function() {
-				this.asyncMethod(function() {
+			filterChanged: function(){
+				this.asyncMethod(function(){
 					this.filterItems();
 				});
 			},
-			itemsChanged: function() {
+			itemsChanged: function(){
 				this.completedCount = this.items.filter(this.filters.completed).length;
 				this.activeCount = this.items.length - this.completedCount;
 				this.allCompleted = this.completedCount && !this.activeCount;
 				this.filterItems();
-				if (this.storage) {
-					this.storage.value = this.items;
-					this.storage.save();
-				}
 			},
-			storageIdChanged: function() {
+			connect: function(){
+				this.storage.connect();
+			},
+			storageIdChanged: function(){
 				this.storage = document.querySelector('#' + this.storageId);
-				if (this.storage) {
-					this.items = this.storage.value;
+				if(this.storage){
+					this.bindEventForStorage(this.storage);
 				}
 			},
-			filterItems: function() {
+			bindEventForStorage: function(storage){
+				var me = this;
+				storage.addEventListener('dropbox-ds-connect-error', function(){
+					me.fire('dropbox-ds-connect-error');
+				});	
+				storage.addEventListener('dropbox-ds-connect-success', function(){
+					me.fire('dropbox-ds-connect-success');
+					me.initStorage();
+				});
+			},
+			initStorage: function(){
+				var me = this;
+				this.getDataStoreManager(function(){
+					// todo
+					me.items = me.changeDropbox2items(me.table.query());
+				});
+			},
+			changeDropbox2items: function(records){
+				var items = [];
+				records = records instanceof Array ? records : [];
+				records.forEach(function(target){
+					items.push(target.getFields());
+				});
+				return items;
+			},
+			filterItems: function(){
 				var fn = this.filters[this.filter];
 				this.filtered = fn ? this.items.filter(fn) : this.items;
 			},
-			newItem: function(title) {
+			newItem: function(title){
 				title = String(title).trim();
-				if (title) {
+				if(title){
 					var item = {
 						title: title,
-						completed: false
+						completed: false,
+						id: new Date().getTime().toString()
 					};
 					this.items.push(item);
+					this.table.getOrInsert(item.id, item);
 					this.itemsChanged();
 				}
 			},
-			destroyItem: function(item) {
+			destroyItem: function(item){
 				var i = this.items.indexOf(item);
-				if (i >= 0) {
+				if(i>=0){
 					this.items.splice(i, 1);
+					this.table.get(item.id).deleteRecord();
 				}
 				this.itemsChanged();
 			},
-			clearItems: function (){
-				this.items = this.items.filter(this.filters.active);
+			updateItem: function(item){
+				var record = this.table.get(item.id);
+				record.update(item);
 			},
-			setItemsCompleted: function(completed) {
-				this.items.forEach(function(item) {
+			clearItems: function(){
+				this.items = this.items.filter(this.filters.active);
+				this.table.query({completed: true}).forEach(function(target){
+					target.deleteRecord();
+				});
+			},
+			setItemsCompleted: function(completed){
+				this.items.forEach(function(item){
 					item.completed = completed;
+				});
+				this.table.query().forEach(function(target){
+					target.set('completed', completed);
 				});
 				this.itemsChanged();
 			},
 			filters: {
-				active: function(item) {
+				active: function(item){
 					return !item.completed;
 				},
-				completed: function(item) {
+				completed: function(item){
 					return item.completed;
 				}
 			}
-	 });
+		});
 	</script>
-</polymer-element>

@@ -45,7 +45,7 @@
 					this.editing = false;
 				},
 				itemChangeAction: function() {
-					this.fire('td-item-changed');
+					this.fire('td-item-changed', this.item);
 				},
 				destroyAction: function() {
 					this.fire('td-destroy-item', this.item);

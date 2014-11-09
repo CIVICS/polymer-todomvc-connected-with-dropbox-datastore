@@ -14,7 +14,7 @@
 		<title>Polymer • TodoMVC</title>
 		<link rel="stylesheet" href="app/app.css" shim-shadowdom>
 		<script src="components/platform/platform.js"></script>
-		<link rel="import" href="components/core-localstorage/core-localstorage.html">
+		<link rel="import" href="components/polymer-dropbox-datastore/dropbox-datastore.html">
 		<link rel="import" href="elements/td-model.html">
 		<link rel="import" href="elements/td-todos.html">
 	</head>
@@ -22,8 +22,8 @@
 		<header>
 			<h1>todos</h1>
 		</header>
-		<core-localstorage id="storage" name="todos-polymer"></core-localstorage>
-		<td-model id="model" storageId="storage"></td-model>
+		<dropbox-datastore id="storage" appKey="4e4us2zjnzxn4z9" autoConnect="false"></dropbox-datastore>
+		<td-model id="model" storageId="storage" tableName="todos-polymer"></td-model>
 		<td-todos modelId="model"></td-todos>
 		<footer id="info">
 			<p>Double-click to edit a todo</p>
