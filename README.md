@@ -1,44 +1,37 @@
 # Polymer TodoMVC Example
 
-> Polymer is a new type of library for the web, built on top of Web Components, and designed to leverage the evolving web platform on modern browsers.
+This is a sample to show how to use dropbox datastore api using [Polymer](https://www.polymer-project.org/).
 
-> _[Polymer - www.polymer-project.org](http://www.polymer-project.org/)_
+You can see original README of this TodoMVC app [here](https://github.com/Polymer/todomvc).
 
-## Learning Polymer
+## Custom Element
 
-The [Polymer website](http://www.polymer-project.org) is a great resource for getting started.
+I also developed custom element to use dropbox datastore api.
+Please check it. This app is sample for it.
 
-Here are some links you may find helpful:
+[polymer-dropbox-datastore](https://github.com/kashiro/polymer-dropbox-datastore)
 
-* [Getting Started](http://www.polymer-project.org/docs/start/everything.html)
-* [FAQ](http://www.polymer-project.org/resources/faq.html)
-* [Browser Compatibility](http://www.polymer-project.org/resources/compatibility.html)
 
-Get help from Polymer devs and users:
+## How to use this sample in local
 
-* Find us on IRC on __#polymer__ at freenode.
-* Join the high-traffic [polymer-dev](https://groups.google.com/forum/?fromgroups=#!forum/polymer-dev) Google group or the announcement-only [polymer-announce](https://groups.google.com/forum/?fromgroups=#!forum/polymer-announce) Google group.
+According to dropbox data store api [documents](https://www.dropbox.com/developers/apps), We can use dropbox api in local (http://localhost is allowed to use for auth).
 
-## Implementation
+I tried but I could not use localhost to auth.
 
-The Polymer implementation of TodoMVC has a few key differences with other implementations:
+So if you want to use this app you have to prepare `https` environment (like dropbox public directory or github pages). 
 
-* Since [Web Components](http://w3c.github.io/webcomponents/explainer/) allow you to create new types of DOM elements, the DOM tree is very different from other implementations.
-* The template, styling, and behavior are fully encapsulated in each custom element. Instead of having an overall stylesheet (`base.css` or `app.css`), each element that needs styling has its own stylesheet.
-* Non-visual elements such as the router and the model are also implemented as custom elements and appear in the DOM. Implementing them as custom elements instead of plain objects allows you to take advantage of Polymer data binding and event handling throughout the app.
+* create dropbox app in [app console page](https://www.dropbox.com/developers/apps)
+* set `Redirect URIs` in app console (you have to set `https` url)
+* change app key in `index.html` (appKey attribute in `dropbox-datastore` custom tag)
+* deploy `https` environment :)
 
-## Compatibility
+## Demo
 
-Polymer and its polyfills are intended to work in the latest version of [evergreen browsers](http://tomdale.net/2013/05/evergreen-browsers/). IE9 is not supported. Please refer to [Browser Compatibility](http://www.polymer-project.org/resources/compatibility.html) for more details.
+I deployed this app on github pages.
+But my dropbox app is limited only 100 user can use it. (now in review to public)
 
-## Running this sample
+[https://kashiro.github.io/polymer-todomvc-connected-with-dropbox-datastore/](https://kashiro.github.io/polymer-todomvc-connected-with-dropbox-datastore/)
 
-1. Install [node.js](nodejs.org) (required for `bower` client-side package management)
-1. Install bower: `npm install -g bower`
+## Reference
 
-1. From the `todomvc\` folder, run `bower update`
-1. Start a web server in the `todomvc\` folder.  Hint: if you have python installed, you can just run:
-
-     `python -m SimpleHTTPServer`
-
-1. Browse to the server root
+* [Dropbox Datastore API](https://www.dropbox.com/developers/datastore/tutorial/js)
