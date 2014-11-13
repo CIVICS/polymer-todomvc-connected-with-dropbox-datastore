@@ -28,7 +28,9 @@ So if you want to use this app you have to prepare `https` environment (like dro
 ## Demo
 
 I deployed this app on github pages.
-But my dropbox app is limited only 100 user can use it. (now in review to public)
+~~But my dropbox app is limited only 100 user can use it. (now in review to public)~~
+The review has finished already! Everyone can use it.
+Thank you [Dropbox](https://www.dropbox.com/).
 
 [https://kashiro.github.io/polymer-todomvc-connected-with-dropbox-datastore/](https://kashiro.github.io/polymer-todomvc-connected-with-dropbox-datastore/)
 
