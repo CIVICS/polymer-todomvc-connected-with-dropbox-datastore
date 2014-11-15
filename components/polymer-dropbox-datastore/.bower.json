@@ -1,6 +1,6 @@
 {
   "name": "dropbox-datastore",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "authors": [
     "kashiro <ksrtmyk@gmail.com>"
   ],
@@ -25,16 +25,17 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.4.2"
+    "polymer": "Polymer/polymer#master",
+    "webcomponentsjs": "polymer/webcomponentsjs#master"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^0.7.3"
   },
-  "_release": "0.0.3",
+  "_release": "0.0.6",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.3",
-    "commit": "29492c5ee6809b73b0964b3bf232896fbcf936e8"
+    "tag": "v0.0.6",
+    "commit": "001343145211f67e5173a0662c5ab15e9a05f35a"
   },
   "_source": "git://github.com/kashiro/polymer-dropbox-datastore.git",
   "_target": "*",
